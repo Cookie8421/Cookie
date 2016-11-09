@@ -1,0 +1,54 @@
+
+public class Score{
+	String num;
+	String name;
+	String major;
+	int score;
+	String unit;
+	public String getName(){
+		return name;
+	}
+	public int getScore(){
+		return score;
+	}
+	public String getNum(){
+		return name;
+	}
+	public String major(){
+		return major;
+	}
+	Score(){
+		
+	}
+	Score(int score){
+		
+	}
+	public void score(int e) throws ScoreException{
+		if(e<0 || e>100){
+			throw new ScoreException(e);
+		}
+	}
+
+}
+public class ScoreException {
+	String message;
+	public ScoreException(int s){
+		message = "Enter is invalid";
+	}
+	public String warnMess(){
+		return message;
+	}
+
+}
+public class TestScore {
+	public static void main(String []args){
+		Score s1 = new Score();
+		try{
+			s1.score=-4;
+		}
+		catch(ScoreException e){
+			System.out.println(e.warnMess());
+		}
+	}
+
+}
