@@ -30,7 +30,7 @@ public class Score{
 	}
 
 }
-public class ScoreException {
+public class ScoreException extends throwable{
 	String message;
 	public ScoreException(int s){
 		message = "Enter is invalid";
@@ -44,7 +44,7 @@ public class TestScore {
 	public static void main(String []args){
 		Score s1 = new Score();
 		try{
-			s1.score=-4;
+			s1.score=(-4);
 		}
 		catch(ScoreException e){
 			System.out.println(e.warnMess());
