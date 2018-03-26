@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><contacts>
+	<linkman id="1">
+		<name>WILL</name>
+		<e-mail>iwiller@sina.cn</e-mail>
+		<address>成都</address>
+		<group>小码哥教育</group>
+	</linkman>
+	<linkman id="2">
+		<name>Ali</name>
+		<e-mail>lanyotach@qq.com</e-mail>
+		<address>成都</address>
+		<group>小码哥教育</group>
+	</linkman>
+    <linkman id="3">
+    <name>COokie</name>
+    <e-mail>562234938@qq.com</e-mail>
+    <address>NJ</address>
+    <group>JS</group>
+    </linkman>
+    
+</contacts>
