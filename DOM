@@ -93,6 +93,22 @@ public class DOMTest {
 		
 		}
 	
+	@Test	
+	public void test4() throws Exception{   //删除xml中的元素
+		//1)获取Document对象
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document doc = builder.parse(f);
+		//2)获取XML根元素
+		Element rootele = doc.getDocumentElement();
+		//3)获取第三个linkman
+		Element ele = (Element) rootele.getElementsByTagName("linkman").item(2);
+		//4)用父元素对象来删除子元素
+		rootele.removeChild(ele);
+		//5)同步操作:内存-->磁盘
+		Transformer tran = TransformerFactory.newInstance().newTransformer();
+		tran.transform(new DOMSource(doc), new StreamResult(f));
+	}
 	
 	
 }
