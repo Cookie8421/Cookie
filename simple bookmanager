@@ -1,0 +1,206 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+public class BookManage extends Frame implements ActionListener{
+	Panel top,buttom;
+	Label bnum1,bname1,warn;
+	TextField bnum2,bname2;
+	Button addbook,updatename,deletebook,search;
+	TextArea info;
+	
+	String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
+	String dbURL = "jdbc:sqlserver://localhost:1433; DatabaseName=Java_BookManagement"; 
+	String userName = "sa"; 
+	String userPwd = "Cookie"; 
+	
+	Connection dbJava_BookManagement;
+	
+	
+	BookManage(){
+		super("BookManager");
+		
+		
+			bnum1=new Label("booknumber");
+			bname1=new Label("bookname");
+			warn=new Label("Pleaz enter booknumber and bookname");
+			bnum2=new TextField(10);
+			bname2=new TextField(10);
+			addbook=new Button("addbook");
+			addbook.addActionListener(this);
+			
+			
+			
+			updatename=new Button("updatename");
+			updatename.addActionListener(this);
+			
+			deletebook=new Button("deletebook");
+			deletebook.addActionListener(this);
+			
+			search=new Button("search");
+			search.addActionListener(this);
+			
+			info=new TextArea();
+			info.setSize(80,50);
+			top=new Panel();
+			buttom=new Panel();
+			top.setSize(60,5);
+			buttom.setSize(60,5);
+			top.add(bnum1);
+			top.add(bnum2);
+			top.add(bname1);
+			top.add(bname2);
+			buttom.add(warn);
+			buttom.add(addbook);
+			buttom.add(updatename);
+			buttom.add(deletebook);
+			buttom.add(search);
+	    	setTitle("BookManager");
+			add(top,BorderLayout.NORTH);
+	    	add(info,BorderLayout.CENTER);
+	    	add(buttom,BorderLayout.SOUTH);
+	    	setBounds(300,300,500,500);
+	    	setVisible(true);
+	    	validate();
+	    	
+	    	addWindowListener(new WindowAdapter(){
+				public void windowClosing(WindowEvent e){
+					System.exit(0);
+				}
+			});
+			
+	}
+	
+	public void actionPerformed(ActionEvent e){
+		PreparedStatement input=null;;
+		Book b1=new Book();
+		if(e.getSource()==addbook){
+			try{
+				try{
+					Class.forName(driverName);
+					dbJava_BookManagement = DriverManager.getConnection(dbURL, userName, userPwd);
+					System.out.println("Connection Successful!"); 
+				}catch(Exception a) {
+					a.printStackTrace();
+				}
+				String sql="insert into Book values('"+Integer.parseInt(bnum2.getText())+"','"
+				+bname2.getText()+"')";
+				input=dbJava_BookManagement.prepareStatement(sql);
+				input.executeUpdate(sql);
+				info.append(b1.toString());
+				warn.setText("add!");
+				input.close();
+				dbJava_BookManagement.close();
+			}catch(NumberFormatException nu){
+                warn.setText("enter error!");
+            }catch(SQLException sqle){
+            	sqle.getStackTrace();
+            }catch(Exception ex){
+            	 warn.setText("error!");
+            }
+		}
+		else if(e.getSource()==search){
+			try{
+				try{
+					Class.forName(driverName);
+					dbJava_BookManagement = DriverManager.getConnection(dbURL, userName, userPwd);
+					System.out.println("Connection Successful!"); 
+				}catch(Exception a) {
+					a.printStackTrace();
+				}
+			String sql="select *  from Book";
+			input=dbJava_BookManagement.prepareStatement(sql);
+			ResultSet b=input.executeQuery(sql);
+			while(b.next());{
+				info.append(b.getString(1));
+				info.append(b.getString(2)+"\n");
+			}
+			warn.setText("search!");
+			input.close();
+			b.close();
+			dbJava_BookManagement.close();
+			}catch(Exception sqle){
+            	 warn.setText("error!");
+            }
+		}
+		else if(e.getSource()==deletebook){
+			try{
+				Class.forName(driverName);
+				dbJava_BookManagement = DriverManager.getConnection(dbURL, userName, userPwd);
+				System.out.println("Connection Successful!"); 
+			}catch(Exception a){
+				a.printStackTrace();
+			}
+			try{
+				String sql="delete from Book where booknum='"+Integer.parseInt(bnum2.getText())+"'";
+				input=dbJava_BookManagement.prepareStatement(sql);
+				input.executeUpdate(sql);
+				warn.setText("delete!");
+				input.close();
+			}catch(NumberFormatException nu){
+                warn.setText("enter error!");
+            }catch(SQLException sqle){
+            	 warn.setText("error!");
+            }
+		}
+		else if(e.getSource()==updatename){
+			try{
+				Class.forName(driverName);
+				dbJava_BookManagement = DriverManager.getConnection(dbURL, userName, userPwd);
+				System.out.println("Connection Successful!"); 
+			}catch(Exception a){
+				a.printStackTrace();
+			}
+			try{
+				String sql="update Book setbookname=''" +bname2.getText()+
+						"where booknum='"+Integer.parseInt(bnum2.getText())+"'";
+				input=dbJava_BookManagement.prepareStatement(sql);
+				input.executeUpdate(sql);
+				warn.setText("update!");
+				input.close();
+			}catch(NumberFormatException nu){
+                warn.setText("enter error!");
+            }catch(SQLException sqle){
+            	 warn.setText("error!");
+            }
+		}
+	}
+}
+
+
+
+
+public class Book {
+	public int booknum;
+	String bookname;
+	public Book(){}
+	public Book(int booknum,String bookname){
+		this.booknum=booknum;
+		this.bookname=bookname;
+	}
+	public void setBooknum(int booknum){
+		this.booknum=booknum;
+	}
+	public int getBooknum(){
+		return booknum;
+	}
+	
+	public void setBookname(String bookname){
+		this.bookname=bookname;
+	}
+	public String getBookname(){
+		return bookname;
+	}
+	public String toString(){
+		return "booknumber:"+booknum+"|"+"bookname:"+bookname;
+	}
+}
+
+
+
+
+import java.sql.*;
+public class Test1 {
+	public static void main(String []args){
+		new BookManage();
+	}
+}
